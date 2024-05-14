@@ -32,9 +32,6 @@ export class UsersService {
             lastName: userData.lastName
         })
 
-        return this.usersRepository.find({
-            where: { id: user.id },
-            relations: ['orders', 'orders.car']
-        })
+        return this.usersRepository.save(user)
     }
 }

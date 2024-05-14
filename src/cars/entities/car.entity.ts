@@ -28,9 +28,12 @@ export class Car {
     @Column('simple-array')
     images: string[]
 
-    @Column()
-    isBookable: boolean
-
     @OneToMany(() => Property, (property) => property.car)
     properties: Property[]
+
+    @Column()
+    numberOfAll: number
+
+    @Column()
+    numberOfAvailable: number
 }

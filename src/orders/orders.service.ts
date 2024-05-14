@@ -38,6 +38,12 @@ export class OrdersService {
             car
         })
 
+        setTimeout(() => {
+            this.carsService.update(car.id, {
+                numberOfAvailable: car.numberOfAvailable - 1
+            })
+        }, createOrderDto.bookingDuration * 1000)
+
         return this.orderRepository.save(order)
     }
 

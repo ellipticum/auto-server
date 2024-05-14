@@ -1,14 +1,15 @@
-import { Module } from '@nestjs/common'
+// properties.module.ts
+import { Module, forwardRef } from '@nestjs/common'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { Property } from './entities/property.entity'
 import { PropertiesService } from './properties.service'
 import { PropertiesController } from './properties.controller'
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { User } from '../users/entities/user.entity'
-import { Property } from './entities/property.entity'
-import { Car } from '../cars/entities/car.entity'
+import { CarsModule } from '../cars/cars.module' // Импортируем CarsModule
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Property, Car])],
+    imports: [TypeOrmModule.forFeature([Property]), forwardRef(() => CarsModule)],
     controllers: [PropertiesController],
-    providers: [PropertiesService]
+    providers: [PropertiesService],
+    exports: [PropertiesService]
 })
 export class PropertiesModule {}

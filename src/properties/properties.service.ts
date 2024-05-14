@@ -1,19 +1,32 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Inject, forwardRef } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Property } from './entities/property.entity'
 import { CreatePropertyDto } from './dto/create-property.dto'
 import { UpdatePropertyDto } from './dto/update-property.dto'
+import { CarsService } from '../cars/cars.service'
 
 @Injectable()
 export class PropertiesService {
     constructor(
         @InjectRepository(Property)
-        private propertyRepository: Repository<Property>
+        private propertyRepository: Repository<Property>,
+        @Inject(forwardRef(() => CarsService))
+        private carsService: CarsService
     ) {}
 
     async create(createPropertyDto: CreatePropertyDto): Promise<Property> {
-        const property = this.propertyRepository.create(createPropertyDto)
+        const property = this.propertyRepository.create({
+            ...createPropertyDto
+        })
+
+        const car = await this.carsService.findOne(createPropertyDto.carId)
+
+        if (!car) {
+            throw new Error(`Car #${createPropertyDto.carId} not found`)
+        }
+        property.car = car
+
         return this.propertyRepository.save(property)
     }
 
