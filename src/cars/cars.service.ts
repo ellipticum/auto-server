@@ -37,8 +37,8 @@ export class CarsService {
         return savedCar
     }
 
-    async findAll(): Promise<Car[]> {
-        return this.carsRepository.find({ relations: ['properties'] })
+    async findAll(limit?: number): Promise<Car[]> {
+        return this.carsRepository.find({ relations: ['properties'], take: limit })
     }
 
     async findOne(id: number): Promise<Car> {

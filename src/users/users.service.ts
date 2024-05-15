@@ -15,7 +15,12 @@ export class UsersService {
     async findOne({ id, login }: { id?: number; login?: string }): Promise<User | undefined> {
         return this.usersRepository.findOne({
             where: { login, id },
-            relations: ['orders', 'orders.car']
+            relations: ['orders', 'orders.car'],
+            order: {
+                orders: {
+                    bookingTime: 'DESC'
+                }
+            }
         })
     }
 
