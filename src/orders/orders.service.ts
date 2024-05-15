@@ -25,7 +25,7 @@ export class OrdersService {
         private carsService: CarsService
     ) {}
 
-    async create(createOrderDto: CreateOrderDto): Promise<Order> {
+    async create(createOrderDto: CreateOrderDto) {
         const user = await this.usersRepository.findOne({
             where: { id: createOrderDto.userId }
         })
@@ -61,7 +61,11 @@ export class OrdersService {
             })
         }, createOrderDto.bookingDuration * 1000)
 
-        return this.orderRepository.save(order)
+        const result = await this.orderRepository.save(order)
+
+        return {
+            result
+        }
     }
 
     async findAll(): Promise<Order[]> {

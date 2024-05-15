@@ -39,12 +39,16 @@ export class AuthService {
         const { login } = userDto
         const existingUser = await this.usersService.findOne({ login })
         if (existingUser) {
-            throw new ConflictException('This user already exists')
+            throw new ConflictException('Пользователь уже есть')
         }
-        const newUser = await this.usersService.create(userDto)
+        const user = await this.usersService.create(userDto)
 
         return {
-            result: newUser
+            result: this.jwtService.sign({
+                id: user.id,
+                firstName: user.firstName,
+                lastName: user.lastName
+            })
         }
     }
 }
