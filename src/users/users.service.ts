@@ -30,6 +30,7 @@ export class UsersService {
 
     async create(userData: any) {
         const hashedPassword = await bcrypt.hash(userData.password, 10)
+
         const user = this.usersRepository.create({
             login: userData.login,
             password: hashedPassword,

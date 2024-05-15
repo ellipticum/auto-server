@@ -19,4 +19,7 @@ export class Order {
 
     @Column()
     bookingDuration: number
+
+    @Column()
+    sum: number
 }
